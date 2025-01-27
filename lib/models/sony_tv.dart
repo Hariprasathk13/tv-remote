@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SonyTVService {
-  final String tvIP;
-  final String apiKey;
+  static String tvIP = "";
+  static String apiKey = "";
 
-  SonyTVService({required this.tvIP, required this.apiKey});
+  SonyTVService();
 
-  Future<void> sendCommand(String method, Map<String, dynamic> params) async {
+  static Future<void> sendCommand(
+      String method, Map<String, dynamic> params) async {
     final url = Uri.parse('http://$tvIP/sony/system');
     final headers = {
       'Content-Type': 'application/json',
@@ -29,8 +30,10 @@ class SonyTVService {
     }
   }
 
-  Future<void> setAudioVolume(String volume,
+  static Future<void> setAudioVolume(String volume,
       {String target = 'speaker'}) async {
+    print(apiKey);
+    print(tvIP);
     final url = Uri.parse('http://$tvIP/sony/audio');
     final headers = {
       'Content-Type': 'application/json',
@@ -57,7 +60,7 @@ class SonyTVService {
     }
   }
 
-  Future<void> setAudioMute(bool status) async {
+  static Future<void> setAudioMute(bool status) async {
     final url = Uri.parse('http://$tvIP/sony/audio');
     final headers = {
       'Content-Type': 'application/json',
