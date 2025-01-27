@@ -6,10 +6,10 @@ import 'package:remote/models/sony_tv.dart';
 import 'package:remote/screens/remoteScreen/components/controller_button.dart';
 
 class DirectionKeys extends StatelessWidget {
-  final SonyTVService service;
+  // final SonyTVService service;
   DirectionKeys({
     super.key,
-    required this.service,
+    // required this.service,
   });
 
   @override
@@ -108,7 +108,7 @@ class DirectionKeys extends StatelessWidget {
               child:
                   const Icon(Icons.arrow_right, size: 30, color: Colors.white),
               onPressed: () {
-                service.setAudioVolume("+1", target: "speaker");
+                SonyTVService.setAudioVolume("+1", target: "speaker");
               },
             ),
           ),
@@ -119,7 +119,7 @@ class DirectionKeys extends StatelessWidget {
               child:
                   const Icon(Icons.arrow_left, size: 30, color: Colors.white),
               onPressed: () {
-                service.setAudioVolume("-1", target: "speaker");
+                SonyTVService.setAudioVolume("-1", target: "speaker");
               },
             ),
           ),

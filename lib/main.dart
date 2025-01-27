@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:remote/screens/remoteScreen/Locate_tv.dart';
 import 'package:remote/screens/remoteScreen/welcome_screen.dart';
 
 void main() {
@@ -21,7 +20,7 @@ class RemoteController extends StatelessWidget {
       title: 'Remote',
       home: Scaffold(
         backgroundColor: Color(0XFF2e2e2e),
-        body: LocateTv(),
+        body: WelcomeScreen(),
       ),
     );
   }

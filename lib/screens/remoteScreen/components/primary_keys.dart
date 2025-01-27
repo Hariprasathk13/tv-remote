@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:remote/models/sony_tv.dart';
 
 class PrimaryKeys extends StatelessWidget {
-  final SonyTVService service;
+
   final void Function() toggleKeypad;
   final bool keypadShown;
   const PrimaryKeys(
       {super.key,
       required this.toggleKeypad,
       required this.keypadShown,
-      required this.service});
+      // required this.service
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class PrimaryKeys extends StatelessWidget {
           icon:
               const Icon(Icons.power_settings_new, color: Colors.red, size: 30),
           onPressed: () async {
-            service.sendCommand("setPowerStatus", {"status": true});
+            SonyTVService.sendCommand("setPowerStatus", {"status": true});
             // sendCommand(});
             // await tv.sendKey(KeyCodes.KEY_POWER);
           },

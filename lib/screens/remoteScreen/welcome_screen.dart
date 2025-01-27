@@ -16,10 +16,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // Timer(Duration(seconds: 3), () {
-    //   Navigator.pushReplacement(
-    //       context, MaterialPageRoute(builder: (context) => LocateTv()));
-    // });
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LocateTv()));
+    });
   }
 
   @override

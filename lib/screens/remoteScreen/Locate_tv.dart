@@ -13,20 +13,19 @@ class LocateTv extends StatefulWidget {
 class _LocateTvState extends State<LocateTv> {
   final TextEditingController ipController = TextEditingController();
   final TextEditingController pskController = TextEditingController();
-  SonyTVService? tvService;
 
   void connectToTV() {
     if (ipController.text.isNotEmpty && pskController.text.isNotEmpty) {
-      setState(() {
-        tvService = SonyTVService(
-          tvIP: ipController.text,
-          apiKey: pskController.text,
-        );
-      });
+      SonyTVService.tvIP = ipController.text.toString().trim();
+      SonyTVService.apiKey = pskController.text.toString().trim();
+      // setState(() {
+      //  SonyTVService tvService = SonyTVService(
+      //       tvIP: ipController.text,
+      //       apiKey: pskController.text,
+      //     );
+      // });
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => RemoteScreen(service: tvService!)));
+          context, MaterialPageRoute(builder: (context) => RemoteScreen()));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -90,14 +89,14 @@ class _LocateTvState extends State<LocateTv> {
     }
   }
 
-  void sendCommand(String method, Map<String, dynamic> params) {
-    if (tvService != null) {
-      tvService!.sendCommand(method, params);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Please connect to a TV first")));
-    }
-  }
+  // void sendCommand(String method, Map<String, dynamic> params) {
+  //   if (tvService != null) {
+  //     tvService!.sendCommand(method, params);
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text("Please connect to a TV first")));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

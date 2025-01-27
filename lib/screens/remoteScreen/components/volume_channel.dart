@@ -5,10 +5,10 @@ import 'package:remote/models/sony_tv.dart';
 import 'package:remote/screens/remoteScreen/components/controller_button.dart';
 
 class VolumeChannelControls extends StatefulWidget {
-  final SonyTVService tv;
+  // final SonyTVService tv;
   const VolumeChannelControls({
     super.key,
-    required this.tv,
+    // required this.tv,
   });
 
   @override
@@ -33,7 +33,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_up,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  widget.tv.setAudioVolume("+1", target: "speaker");
+                  SonyTVService.setAudioVolume("+1", target: "speaker");
                 },
               ),
               MaterialButton(
@@ -44,9 +44,9 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                     size: 20, color: Colors.white70),
                 onPressed: () async {
                   if (ismutted)
-                    widget.tv.setAudioMute(false);
+                    SonyTVService.setAudioMute(false);
                   else
-                    widget.tv.setAudioMute(true);
+                    SonyTVService.setAudioMute(true);
                   setState(() {
                     ismutted = !ismutted;
                   });
@@ -59,7 +59,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_down,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  widget.tv.setAudioVolume("-1", target: "speaker");
+                  SonyTVService.setAudioVolume("-1", target: "speaker");
 
                   // await tv.sendKey(KeyCodes.KEY_VOLDOWN);
                 },
