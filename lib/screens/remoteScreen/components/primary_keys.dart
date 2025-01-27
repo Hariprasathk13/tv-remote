@@ -1,16 +1,43 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:remote/models/sony_tv.dart';
 
 class PrimaryKeys extends StatelessWidget {
-
+  final ip;
+  final tvkey;
   final void Function() toggleKeypad;
   final bool keypadShown;
-  const PrimaryKeys(
-      {super.key,
-      required this.toggleKeypad,
-      required this.keypadShown,
-      // required this.service
-      });
+  const PrimaryKeys({
+    super.key,
+    required this.toggleKeypad,
+    required this.keypadShown,
+    this.ip,
+    this.tvkey,
+    // required this.service
+  });
+  Future<void> sendCommand(String method, Map<String, dynamic> params) async {
+    final url = Uri.parse('http://$ip/sony/system');
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'X-Auth-PSK': tvkey,
+    };
+    final body = jsonEncode({
+      "method": method,
+      "params": [params],
+      "id": 1,
+      "version": "1.0"
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print("Command sent successfully: ${response.body}");
+    } else {
+      print("Failed to send command: ${response.body}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +57,7 @@ class PrimaryKeys extends StatelessWidget {
           icon:
               const Icon(Icons.power_settings_new, color: Colors.red, size: 30),
           onPressed: () async {
-            SonyTVService.sendCommand("setPowerStatus", {"status": true});
+            sendCommand("setPowerStatus", {"status": true});
             // sendCommand(});
             // await tv.sendKey(KeyCodes.KEY_POWER);
           },

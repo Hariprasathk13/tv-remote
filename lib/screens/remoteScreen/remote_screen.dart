@@ -1,12 +1,12 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 
-import 'package:remote/models/sony_tv.dart';
 import 'components/components.dart';
 
 class RemoteScreen extends StatefulWidget {
+  final ip;
+  final tvkey;
   const RemoteScreen({
-    super.key,
+    super.key, this.ip, this.tvkey,
   });
 
   @override
@@ -62,4 +62,5 @@ class _RemoteScreenState extends State<RemoteScreen> {
       ),
     ));
   }
+
 }

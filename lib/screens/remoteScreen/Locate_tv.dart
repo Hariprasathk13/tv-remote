@@ -16,8 +16,8 @@ class _LocateTvState extends State<LocateTv> {
 
   void connectToTV() {
     if (ipController.text.isNotEmpty && pskController.text.isNotEmpty) {
-      SonyTVService.tvIP = ipController.text.toString().trim();
-      SonyTVService.apiKey = pskController.text.toString().trim();
+      // SonyTVService.tvIP = ipController.text.toString().trim();
+      // SonyTVService.apiKey = pskController.text.toString().trim();
       // setState(() {
       //  SonyTVService tvService = SonyTVService(
       //       tvIP: ipController.text,

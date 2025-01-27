@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:remote/constants/key_codes.dart';
 import 'package:remote/models/samsung_tv.dart';
@@ -5,9 +7,13 @@ import 'package:remote/models/sony_tv.dart';
 import 'package:remote/screens/remoteScreen/components/controller_button.dart';
 
 class VolumeChannelControls extends StatefulWidget {
+  final ip;
+  final tvkey;
   // final SonyTVService tv;
   const VolumeChannelControls({
     super.key,
+    this.ip,
+    this.tvkey,
     // required this.tv,
   });
 
@@ -16,6 +22,59 @@ class VolumeChannelControls extends StatefulWidget {
 }
 
 class _VolumeChannelControlsState extends State<VolumeChannelControls> {
+  Future<void> setAudioMute(bool status) async {
+    final url = Uri.parse('http://${widget.ip}/sony/audio');
+    final Map<String,String> headers = {
+      'Content-Type': 'application/json',
+      'X-Auth-PSK': widget.tvkey,
+    };
+    final body = jsonEncode({
+      "method": "setAudioMute",
+      "params": [
+        {
+          "status": status,
+        }
+      ],
+      "id": 1,
+      "version": "1.0"
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print("Mute command sent successfully: ${response.body}");
+    } else {
+      print("Failed to send mute command: ${response.body}");
+    }
+  }
+Future<void> setAudioVolume(String volume,
+      {String target = 'speaker'}) async {
+    final url = Uri.parse('http://${widget.ip}/sony/audio');
+    final Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'X-Auth-PSK': widget.key.toString(),
+    };
+    final body = jsonEncode({
+      "method": "setAudioVolume",
+      "params": [
+        {
+          "volume": volume,
+          "target": target,
+        }
+      ],
+      "id": 1,
+      "version": "1.0"
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print("Volume command sent successfully: ${response.body}");
+    } else {
+      print("Failed to send volume command: ${response.body}");
+    }
+  }
+
   bool ismutted = false;
   @override
   Widget build(BuildContext context) {
@@ -33,7 +92,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_up,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  SonyTVService.setAudioVolume("+1", target: "speaker");
+                setAudioVolume("+1", target: "speaker");
                 },
               ),
               MaterialButton(
@@ -44,9 +103,9 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                     size: 20, color: Colors.white70),
                 onPressed: () async {
                   if (ismutted)
-                    SonyTVService.setAudioMute(false);
+                    setAudioMute(false);
                   else
-                    SonyTVService.setAudioMute(true);
+                    setAudioMute(true);
                   setState(() {
                     ismutted = !ismutted;
                   });
@@ -59,7 +118,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_down,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  SonyTVService.setAudioVolume("-1", target: "speaker");
+                  setAudioVolume("-1", target: "speaker");
 
                   // await tv.sendKey(KeyCodes.KEY_VOLDOWN);
                 },
