@@ -55,7 +55,7 @@ class PrimaryKeys extends StatelessWidget {
         ),
         IconButton(
           icon:
-              const Icon(Icons.power_settings_new, color: Colors.red, size: 30),
+               Icon(Icons.power_settings_new, color: Colors.red, size: 30),
           onPressed: () async {
             sendCommand("setPowerStatus", {"status": true});
             // sendCommand(});
