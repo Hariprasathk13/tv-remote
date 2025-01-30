@@ -45,7 +45,10 @@ class _RemoteScreenState extends State<RemoteScreen> {
             const SizedBox(height: 50),
             Visibility(
               visible: _keypadShown,
-              child: NumPad(),
+              child: NumPad(
+                ip: widget.ip,
+                tvkey: widget.tvkey,
+              ),
             ),
             Visibility(
               visible: !_keypadShown,
