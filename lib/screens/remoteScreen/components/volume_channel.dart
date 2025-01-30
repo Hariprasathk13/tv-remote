@@ -73,6 +73,33 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
     }
   }
 
+  Future<void> sendMenuCommand() async {
+    final url = Uri.parse('http://${widget.ip}/sony/ircc');
+    final Map<String, String> headers = {
+      'Content-Type': 'text/xml',
+      'X-Auth-PSK': widget.tvkey,
+    };
+    final body = '''
+    <?xml version="1.0"?>
+    <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" 
+                s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <s:Body>
+            <u:IRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+                <IRCCCode>AAAAAQAAAAEAAAAUAw==</IRCCCode>
+            </u:IRCC>
+        </s:Body>
+    </s:Envelope>
+  ''';
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print("Menu button command sent successfully!");
+    } else {
+      print("Failed to send Menu button command: ${response.body}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -89,7 +116,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_up,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  setAudioVolume("+1", target: "speaker");
+                await  setAudioVolume("+1", target: "speaker");
                 },
               ),
               MaterialButton(
@@ -112,7 +139,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                 child: const Icon(Icons.keyboard_arrow_down,
                     size: 20, color: Colors.white54),
                 onPressed: () async {
-                  setAudioVolume("-1", target: "speaker");
+                await  setAudioVolume("-1", target: "speaker");
                 },
               ),
             ],
@@ -130,6 +157,7 @@ class _VolumeChannelControlsState extends State<VolumeChannelControls> {
                     color: Colors.white54),
               ),
               onPressed: () async {
+                sendMenuCommand();
                 // Example: Uncomment if you want to send a key command (e.g., "home" key)
                 // await tv.sendKey(KeyCodes.KEY_HOME);
               },

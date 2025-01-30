@@ -1,13 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:remote/constants/key_codes.dart';
-import 'package:remote/models/samsung_tv.dart';
+import 'package:http/http.dart' as http;
 
 import 'controller_button.dart';
 
-class NumPad extends StatelessWidget {
-  const NumPad({
+class NumPad extends StatefulWidget {
+  final ip;
+  final tvkey;
+  NumPad({
     super.key,
+    required this.ip,
+    required this.tvkey,
   });
+
+  @override
+  State<NumPad> createState() => _NumPadState();
+}
+
+class _NumPadState extends State<NumPad> {
+  Future<void> sendNavigationCommand(String irccCode) async {
+    final url = Uri.parse('http://${widget.ip}/sony/ircc');
+    final Map<String, String> headers = {
+      'Content-Type': 'text/xml',
+      'X-Auth-PSK': widget.tvkey,
+    };
+    final body = '''
+    <?xml version="1.0"?>
+    <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" 
+                s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <s:Body>
+            <u:IRCC xmlns:u="urn:schemas-sony-com:service:IRCC:1">
+                <IRCCCode>$irccCode</IRCCCode>
+            </u:IRCC>
+        </s:Body>
+    </s:Envelope>
+  ''';
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      print("Navigation command sent successfully!");
+    } else {
+      print("Failed to send navigation command: ${response.body}");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +186,9 @@ class NumPad extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.white70),
                 ),
-                onPressed: () {})
+                onPressed: () async {
+                  await sendNavigationCommand("AAAAAgAAAMQAAABNAw==");
+                })
           ])
         ]));
   }

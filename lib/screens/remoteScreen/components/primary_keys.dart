@@ -13,8 +13,8 @@ class PrimaryKeys extends StatelessWidget {
     super.key,
     required this.toggleKeypad,
     required this.keypadShown,
-    this.ip,
-    this.tvkey,
+    required this.ip,
+    required this.tvkey,
     // required this.service
   });
   Future<void> sendCommand(String method, Map<String, dynamic> params) async {
@@ -54,10 +54,9 @@ class PrimaryKeys extends StatelessWidget {
           onPressed: toggleKeypad,
         ),
         IconButton(
-          icon:
-               Icon(Icons.power_settings_new, color: Colors.red, size: 30),
+          icon: Icon(Icons.power_settings_new, color: Colors.red, size: 30),
           onPressed: () async {
-            sendCommand("setPowerStatus", {"status": true});
+            await sendCommand("setPowerStatus", {"status": false});
             // sendCommand(});
             // await tv.sendKey(KeyCodes.KEY_POWER);
           },
